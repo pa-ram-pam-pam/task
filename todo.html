@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>ToDo List</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+      crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+      crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Caveat+Brush" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Ranga" rel="stylesheet">
+    <link href="css/todo.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <header>
+      <h1>ToDo List</h1>
+    </header>
+
+    <main>
+      <div>
+        <div class="main-all">
+          <form id="main">
+            <input id="task" placeholder="What needs to be done?" class="input-lg" autofocus>
+            <input type="submit" id="add" class="btn btn-default btn-lg" value="Add">
+            <div id="todos"></div>
+          </form>
+        </div>
+        <div class="main-all counter-badge">
+          <p class="pull-right"><span class="badge" id="counter"></span> items left</p>
+        </div>
+        <div class="main-all" id="main-footer">
+          <div class="select-button-group">
+            <div id="selectAll" class="select-button">
+              <a href="javascript:void()" title="Select All">
+                <img src="img/select.png" alt="select-all">
+                <center>Select All</center>
+              </a>
+            </div>
+            <div id="deselectAll" class="select-button">
+              <a href="javascript:void()" title="Deselect All">
+                <img src="img/select.png" alt="deselect-all" class="deselect-all">
+                <center>Deselect All</center>
+              </a>
+            </div>
+          </div>
+          <div>
+            <div class="filter-buttons-group">
+              <p class="active filterButton" id="allFilter">All</p>
+              <p class="filterButton" id="activeFilter">Active</p>
+              <p class="filterButton" id="completedFilter">Completed</p>
+            </div>
+            <div class="button-clear-completed">
+              <p class="btn btn-default" id="completedRemove">Clear Completed</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="todo.js"></script>
+  </body>
+</html>
