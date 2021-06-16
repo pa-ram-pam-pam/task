@@ -1,10 +1,16 @@
-let activeFilter = "all";
+const INITIAL_VALUES_TODO = [
+    {description: 'Сдать теорию комиссии', completed: true},
+    {description: 'Сдать практическое задание', completed: false},
+    {description: 'Профит!', completed: false},
+];
 
 const todoList = new TodoList();
 
+let activeFilter = 'all';
+
 showTaskList();
 
-document.getElementById('add').addEventListener('click', add);
+document.getElementById("add").addEventListener('click', add);
 document.querySelector("#allFilter").addEventListener('click', filterByAll, false);
 document.querySelector("#activeFilter").addEventListener('click', filterByActive, false);
 document.querySelector("#completedFilter").addEventListener('click', filterByCompleted, false);
@@ -18,12 +24,11 @@ function TodoList() {
     const addTask = function (task) {
         task.id = current_id
         tasks.set(current_id, task);
-        current_id += 1;
+        current_id++;
         return task;
-    }
-    addTask({description: 'create todo list', completed: false});
-    addTask({description: 'add filtering by priority', completed: false});
-    addTask({description: 'use rest api backend', completed: false});
+    };
+
+    INITIAL_VALUES_TODO.forEach(task => addTask(task));
 
     return {
         complete_task: function (task_id) {
@@ -50,8 +55,8 @@ function TodoList() {
         all_tasks: function () {
             return tasks.values();
         },
-    }
-}
+    };
+};
 
 function selectAll() {
     const inputs = $("input[type=checkbox]");
@@ -59,9 +64,9 @@ function selectAll() {
     for (let i = 0; i < inputs.length; i++) {
         inputs[i].checked = true;
         todoList.complete_task(inputs[i].id);
-        showTaskList();
-    }
-}
+    }''
+    showTaskList();
+}''
 
 function deselectAll() {
     const inputs = $("input[type=checkbox]");
@@ -69,10 +74,9 @@ function deselectAll() {
     for (let i = 0; i < inputs.length; i++) {
         inputs[i].checked = false;
         todoList.uncomplete_task(inputs[i].id);
-    }
+    }''
     showTaskList();
-}
-
+};
 
 function completedRemove() {
     const inputs = $("input[type=checkbox]");
@@ -80,64 +84,57 @@ function completedRemove() {
     for (let i = 0; i < inputs.length; i++) {
         if (inputs[i].checked == true) {
             todoList.remove_task(inputs[i].id)
-        }
+        };
         showTaskList();
-    }
-}
-
+    };
+};
 
 function changeStatus(task_id) {
     const task = todoList.get_task(task_id);
-
-    if (task.completed == true) {
-        todoList.uncomplete_task(task_id)
-    } else {
-        todoList.complete_task(task_id)
-    }
+    (task.completed === true) ? todoList.uncomplete_task(task_id) : todoList.complete_task(task_id)
     showTaskList();
-}
+};
 
-function taskList() {
+function showTaskList() {
+    taskList();
+    filterTasksBy(activeFilter);
+    calculateCounter();
 
-    function isTaskCompleted(task_id) {
-        const task = todoList.get_task(task_id);
-        return task.completed;
-    }
+    function taskList() {
 
-    function checkedProperty(task_id) {
-        if (isTaskCompleted(task_id)) {
-            return "checked=\"true\"";
-        } else {
-            return "";
-        }
-    }
+        function isTaskCompleted(task_id) {
+            const task = todoList.get_task(task_id);
+            return task.completed;
+        };
 
-    function changeLabel() {
-        const id = this.getAttribute('id')
-        const description = $('label[id="' + id + '"]').val();
-        $('label[id="' + id + '"]').hide();
-        $('.edit-input[id="' + id + '"]').show().focus();
-        // return true;
-    }
+        function checkedProperty(task_id) {
+            if (isTaskCompleted(task_id)) {
+                return `checked="true"`;
+            };
+            return '';
+        };
 
-    function labelChanged() {
-        const id = this.getAttribute('id');
-        const description = $('.edit-input[id=' + id + ']').val();
+        function changeLabel() {
+            const id = this.getAttribute('id');
+            $(`label[id="${id}"]`).hide();
+            $(`.edit-input[id="${id}"]`).show().focus();
+        };
 
-        todoList.edit_task(id, description);
-        showTaskList();
-        // return false;
-    }
+        function labelChanged() {
+            const id = this.getAttribute('id');
+            const description = $(`.edit-input[id=${id}]`).val();
+            todoList.edit_task(id, description);
+            showTaskList();
+        };
 
-    let html = '';
-    for (let todo of todoList.all_tasks()) {
-        const onclick = `onClick=changeStatus(${todo.id})`;
-        const checked = checkedProperty(todo.id);
-        console.log(todo)
-         html +=
-            `<div class="input-group style">
+        let html = '';
+        for (let todo of todoList.all_tasks()) {
+            const onclick = `onClick=changeStatus(${todo.id})`;
+            const checked = checkedProperty(todo.id);
+            html +=
+                `<div class="input-group style">
                     <span class="input-group">
-                        <input type="checkbox" id="${todo.id} " ${onclick} ${checked}>
+                        <input type="checkbox" id="${todo.id} " onclick="${onclick}" ${checked}>
                             <label for="checkbox" id="${todo.id}" class="edit">${todo.description}</label>
                         <input class="edit-input" id="${todo.id}"/>
                     </span>
@@ -146,37 +143,28 @@ function taskList() {
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </span>
-                 </div>`
-    }
+                </div>`
+        };
 
-    document.getElementById('todos').innerHTML = html;
+        document.getElementById('todos').innerHTML = html;
 
-    const buttons = document.getElementsByClassName('remove');
-    const edit = document.getElementsByClassName('edit');
-    const edit_inputs = document.getElementsByClassName('edit-input');
+        const buttons = document.getElementsByClassName('remove');
+        const edit = document.getElementsByClassName('edit');
+        const edit_inputs = document.getElementsByClassName('edit-input');
 
-    for (let i = 0; i < buttons.length; i++) {
-        buttons[i].addEventListener('click', remove);
-    }
-    ;
+        for (let i = 0; i < buttons.length; i++) {
+            buttons[i].addEventListener('click', remove);
+        };
 
-    for (let i = 0; i < edit.length; i++) {
-        edit[i].addEventListener('dblclick', changeLabel);
-        edit[i].addEventListener('touchmove', changeLabel);
-    }
-    ;
+        for (let i = 0; i < edit.length; i++) {
+            edit[i].addEventListener('dblclick', changeLabel);
+            edit[i].addEventListener('touchmove', changeLabel);
+        };
 
-    for (let i = 0; i < edit_inputs.length; i++) {
-        edit_inputs[i].addEventListener('focusout', labelChanged);
-    }
-    ;
-}
-
-function showTaskList() {
-
-    taskList();
-    filterTasksBy(activeFilter);
-    calculateCounter();
+        for (let i = 0; i < edit_inputs.length; i++) {
+            edit_inputs[i].addEventListener('focusout', labelChanged);
+        };
+    };
 
     function calculateCounter() {
         const $counter = $('#counter');
@@ -185,68 +173,61 @@ function showTaskList() {
         const tempArray = [$inputsCh.length, $inputs.length];
         const informationText = tempArray[1] - tempArray[0];
         $counter.html(informationText);
-    }
+    };
 
-    function filterTasksBy () {
+    function filterTasksBy() {
         if (activeFilter == "all") {
             filterByAll();
         } else if (activeFilter == "active") {
             filterByActive();
         } else {
             filterByCompleted();
-        }
-    }
-}
+        };
+    };
+};
 
-// Фильтры
 function filterByAll() {
-    activeFilter = "all";
+    activeFilter = 'all';
     const inputs = $("input[type=checkbox]");
     $('#allFilter').addClass("active");
     $('#completedFilter').removeClass("active");
     $('#activeFilter').removeClass("active");
     return inputs.parents().show();
-}
+};
 
 function filterByActive() {
-    activeFilter = "active";
+    activeFilter = 'active';
     const $inputs = $("div input[type=checkbox]");
     const $inputsCh = $inputs.filter(":checked");
     const $inputsNotCh = $inputs.filter(":not(:checked)");
-    const $parentInputs = $inputsCh.parent();
+    const $parentInputs = $inputsCh.parent().parent();
     $('#activeFilter').addClass("active");
     $('#allFilter').removeClass("active");
     $('#completedFilter').removeClass("active");
     return ($parentInputs.hide(), $inputsNotCh.parents().show());
-    showTaskList();
-}
+};
 
 function filterByCompleted() {
-    activeFilter = "completed";
+    activeFilter = 'completed';
     const $inputs = $("div input[type=checkbox]");
     const $inputsCh = $inputs.filter(":checked");
     const $inputsNotCh = $inputs.filter(":not(:checked)");
-    $parentInputs = $inputsNotCh.parent();
+    $parentInputs = $inputsNotCh.parent().parent();
     $('#completedFilter').addClass("active");
     $('#allFilter').removeClass("active");
     $('#activeFilter').removeClass("active");
     return ($parentInputs.hide(), $inputsCh.parents().show());
-    showTaskList();
-}
+};
 
-// Добавить / удалить
 function add(ev) {
     ev.preventDefault()
     const description = document.getElementById('task').value;
     todoList.add_task({'description': description, 'completed': false});
     showTaskList();
-    // return true;
-}
+};
 
 function remove() {
     const id = this.getAttribute('id');
-
     todoList.remove_task(id);
     showTaskList();
-    // return false;
-}
+};
