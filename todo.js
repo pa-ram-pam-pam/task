@@ -64,9 +64,9 @@ function selectAll() {
     for (let i = 0; i < inputs.length; i++) {
         inputs[i].checked = true;
         todoList.complete_task(inputs[i].id);
-    }''
+    };
     showTaskList();
-}''
+};
 
 function deselectAll() {
     const inputs = $("input[type=checkbox]");
@@ -74,7 +74,7 @@ function deselectAll() {
     for (let i = 0; i < inputs.length; i++) {
         inputs[i].checked = false;
         todoList.uncomplete_task(inputs[i].id);
-    }''
+    };
     showTaskList();
 };
 
